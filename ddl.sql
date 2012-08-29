@@ -30,6 +30,8 @@ CREATE SEQUENCE purchases_id_seq
 
 ALTER SEQUENCE purchases_id_seq OWNED BY purchases.id;
 
+CREATE EXTENSION hstore;
+
 CREATE TABLE users (
     id integer NOT NULL,
     first_name character varying(50),
@@ -61,8 +63,6 @@ COPY products (id, title, description, price) FROM stdin;
 7	Cooking 401	Cookbook for getting started	29.99
 8	Heroku Dyno	A single process on heroku	36.00
 \.
-
-CREATE EXTENSION hstore;
 
 CREATE OR REPLACE FUNCTION total(decimal(10,2)[][]) RETURNS decimal(10,2) AS $$
 DECLARE
