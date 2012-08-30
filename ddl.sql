@@ -1,29 +1,31 @@
-CREATE TABLE products (
-    id serial,
-    title character varying(255),
-    description text,
-    price numeric(10,2)
-);
-
-CREATE TABLE purchases (
-    id serial,
-    user_id integer,
-    items decimal(10,2) [100][1],
-	occurred_at timestamp
-);
-
 CREATE EXTENSION hstore;
 
 CREATE TABLE users (
-    id serial,
-    first_name character varying(50),
-    last_name character varying(50),
-    email character varying(255),
-	data hstore,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    last_login timestamp without time zone
+  id serial PRIMARY KEY,
+  first_name character varying(50),
+  last_name character varying(50),
+  email character varying(255),
+  data hstore,
+  created_at timestamp without time zone,
+  updated_at timestamp without time zone,
+  last_login timestamp without time zone
 );
+
+CREATE TABLE products (
+  id serial PRIMARY KEY,
+  title character varying(255),
+  description text,
+  price numeric(10,2)
+);
+
+CREATE TABLE line_items (
+  id serial PRIMARY KEY,
+  user_id integer references users(id),
+  product_id integer references products(id),
+  order_id integer,
+  occurred_at timestamp
+);
+
 
 COPY products (title, description, price) FROM stdin;
 Django Pony	The Django Pony	50.00
