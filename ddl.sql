@@ -16,7 +16,7 @@ CREATE TABLE products (
   title character varying(255),
   description text,
   price numeric(10,2),
-  tags string[]
+  tags text[]
 );
 
 CREATE TABLE line_items (
@@ -28,27 +28,13 @@ CREATE TABLE line_items (
 );
 
 
-COPY products (title, description, price) FROM stdin;
-Django Pony	The Django Pony	50.00
-Pink Pony	A Pink Pony	299.99
-Ruby Gem	All the Rubies!	49.50
-Purple Gem	Its purple...	9.99
-Cooking 101	Cookbook for getting started	9.99
-Cooking 102	Cookbook for getting started	15.00
-Cooking 401	Cookbook for getting started	29.99
-Heroku Dyno	A single process on heroku	36.00
+COPY products (title, description, price, tags) FROM stdin;
+Django Pony	The Django Pony	50.00	{Animal,Programming}
+Pink Pony	A Pink Pony	299.99	{Animal}
+Ruby Gem	All the Rubies!	49.50	{Programming,Jewelry}
+Purple Gem	Its purple...	9.99	{Jewelry}
+Cooking 101	Cookbook for getting started	9.99	{Cooking,Book}
+Cooking 102	Cookbook for getting started	15.00	{Cooking,Book}
+Cooking 401	Cookbook for getting started	29.99	{Cooking,Book}
+Heroku Dyno	A single process on heroku	36.00	{Programming}
 \.
-
-CREATE OR REPLACE FUNCTION total(decimal(10,2)[][]) RETURNS decimal(10,2) AS $$
-DECLARE
-  s decimal(10,2) := 0;
-  x decimal[];
-BEGIN
-  FOREACH x SLICE 1 IN ARRAY $1
-  LOOP
-    s := s + (x[2] * x[3]);
-  END LOOP;
-  RETURN s;
-END;
-$$ LANGUAGE plpgsql;
-
