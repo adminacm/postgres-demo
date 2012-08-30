@@ -15,7 +15,8 @@ CREATE TABLE products (
   id serial PRIMARY KEY,
   title character varying(255),
   description text,
-  price numeric(10,2)
+  price numeric(10,2),
+  tags string[]
 );
 
 CREATE TABLE line_items (
